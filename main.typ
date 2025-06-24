@@ -18,3 +18,24 @@
 )
 
 #lorem(100)
+
+#show: equation-ext.with(
+  title: "Sinusschwingung",
+  equations: (
+    $I=U/R$,
+    $t$,
+    $j$
+  ),
+  variables: (
+    "I",
+    "U"
+  ),
+  explenations: (
+    "test",
+    "dlfkjsdlfj"
+  ),
+  text: "jaja",
+)
+
+
+
