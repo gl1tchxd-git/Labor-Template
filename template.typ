@@ -94,7 +94,7 @@
             grid(
               gutter: 0em,
               inset: 0.5em,
-              stroke: rgb(0, 0, 0, 255),
+              // stroke: rgb(0, 0, 0, 255),
               align: left,
               ..equations.map(eq => align(start, eq))
             )
@@ -102,13 +102,11 @@
           block(
             grid(
               gutter: 0em,
-              inset: 0.5em,
               columns: (2fr, 6fr),
-              stroke: rgb(0, 0, 0, 255),
-              align: left,
+              // stroke: rgb(0, 0, 0, 255),
               ..variables.zip(explenations).map(((var, expl)) => (
-                var + align(center, repeat(".")),
-                expl
+                pad(right: 0pt, rest: 0.5em, var + box(width: 1fr, align(right, repeat(".", justify: false)))),
+                pad(left: 1pt, rest: 0.5em, expl)
               )).flatten()
             ),
           )
@@ -119,35 +117,4 @@
   )
 
   body
-}
-
-#let typst-repeat(
-  gap: none,
-  justify: false,
-  body
-) = layout(size => context {
-  let pt(length) = measure(h(length)).width
-  let width = measure(body).width
-  let amount = calc.floor(pt(size.width + gap) / pt(width + gap))
-
-  let gap = if not justify { gap } else {
-    (size.width - amount * width) / (amount - 1)
-  }
-
-  let items = ((box(body),) * amount)
-  if type(gap) == length and gap != 0pt {
-    items = items.intersperse(h(gap))
-  }
-
-  items.join()
-})
-
-#show outline.entry: it => context {
-  let max-page-width = calc.max(..range(1, counter(page).final().first()).map(p => {
-    measure(strong[#sym.space.en#p]).width
-  }))
-
-  strong[#it.body ]
-  box(width: 1fr, align(right, typst-repeat(gap: 2pt)[.]))
-  box(width: max-page-width, align(right, strong(it.page)))
 }
