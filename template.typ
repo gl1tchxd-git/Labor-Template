@@ -1,3 +1,5 @@
+#import "setup.typ": *
+
 #let project(
   title: "",
   subtitle: "",
@@ -73,48 +75,63 @@
   title: "",
   equations: (),
   variables: (),
-  explenations: (),
-  text: "",
+  definitions: (),
+  explanation: "",
   body,
-) = {
-  pad(
-    block(
-      width: 100%,
-      fill: rgb(255, 249, 143, 255), 
-      stroke: yellow, 
+) = {  
+  v(0.5em)
+  align(center)[
+    #block(
+      fill: colors.equation-ext-color, 
+      stroke: colors.equation-ext-stroke,
+      width: 80%,
       inset: 10pt,
       radius: 5pt,
     )[
-      #title
-      #block(inset: 10pt)[
-        #grid(
-          columns: (2fr, 1fr),
+      #align(left)[#text(size: 1.2em, title)]
+      #grid(
+        align: horizon + center,
+        columns: (60%, 40%),
+        // stroke: rgb(0, 0, 0, 255),
+        gutter: 0em,
+        grid(
           gutter: 0em,
-          block(
-            grid(
-              gutter: 0em,
-              inset: 0.5em,
-              // stroke: rgb(0, 0, 0, 255),
-              align: left,
-              ..equations.map(eq => align(start, eq))
-            )
-          ),
-          block(
-            grid(
-              gutter: 0em,
-              columns: (2fr, 6fr),
-              // stroke: rgb(0, 0, 0, 255),
-              ..variables.zip(explenations).map(((var, expl)) => (
-                pad(right: 0pt, rest: 0.5em, var + box(width: 1fr, align(right, repeat(".", justify: false)))),
-                pad(left: 1pt, rest: 0.5em, expl)
-              )).flatten()
-            ),
+          inset: 0.5em,
+          ..equations.map(eq => align(center)[
+            #show math.equation: set text(font: "New Computer Modern Math")
+            #show raw: set text(font: "New Computer Modern Math")
+            #math.equation(eq)
+          ])
+        ),
+        block(width: 100%, breakable: true)[
+          #grid(
+            gutter: 0em,
+            columns: (20%, 10%, 70%),
+            // stroke: rgb(0, 0, 0, 255),
+            align: top,
+            ..variables.zip(definitions).map(((var, def)) => (
+              pad(right: 0pt, rest: 3pt, align(right)[
+                #show math.equation: set text(font: "New Computer Modern Math")
+                #show raw: set text(font: "New Computer Modern Math")
+                #var
+              ]),
+              pad(x: 0pt, rest: 3pt, repeat(".", justify: true)),
+              pad(left: 1pt, rest: 3pt,
+                align(left)[
+                  #block(width: 100%)[
+                    #box(width: 100%)[
+                      #text(hyphenate: true, eval(mode: "markup", def))
+                    ]
+                  ]
+                ]
+              )
+            )).flatten(),
           )
-        )
-      ]
-      #text
+        ]
+      )
+      #align(left, explanation)
     ]
-  )
+  ]
 
   body
 }

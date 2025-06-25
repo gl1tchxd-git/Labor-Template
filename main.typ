@@ -20,22 +20,19 @@
 #lorem(100)
 
 #show: equation-ext.with(
-  title: "Sinusschwingung",
+  title: "Title",
   equations: (
-    $I=U/R$,
-    $t$,
-    $j$
+    $U=R*I$,
+    $"test"$,
   ),
   variables: (
-    "I",
-    "U"
+    $U$,
+    $R$,
+    $I$,
   ),
-  explenations: (
-    "test",
-    "dlfkjsdlfj"
+  definitions: (
+    "Definition 1",
+    "Definition 2 (also longer text to test the layout)"
   ),
-  text: "jaja",
+  explanation: "Explenation of the equations and definitions.",
 )
-
-
-
