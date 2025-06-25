@@ -53,22 +53,45 @@
   body
 }
 
+#let contents = (
+  heading: [
+    #context {
+      let headings = counter(heading).final().first()
+  
+      if headings > 0 {
+        outline(title: "Inhaltsverzeichnis")
+        pagebreak()
+      }
+    }
+  ],
+  image: [
+    #context {
+      let images = counter(figure.where(kind: image)).final().first()
+  
+      if images > 0 {
+        pagebreak()
+        outline(title: "Abbildungen", target: figure.where(kind: image))
+      }
+    }
+  ],
+)
+
+
 #let image-text(
   filename: "",
   alt: "",
-  body
 ) = {
   pad(
-    {
-      image("Data/Sine1.png", alt: alt)
-      alt
-    },
+    figure(
+      image(filename, alt: alt),
+      supplement: "Abb.",
+      caption: alt,
+      gap: 1em
+    ),
     20pt,
     top: 10pt,
     bottom: 10pt,
   )
-
-  body
 }
 
 #let equation-ext(
@@ -77,29 +100,29 @@
   variables: (),
   definitions: (),
   explanation: "",
-  body,
-) = {  
-  v(0.5em)
+  ratio: equation-ext-ratio,
+  fg: colors.equation-ext-fg,
+  bg: colors.equation-ext-bg,
+) = {
+  spacers.equation-ext-y
   align(center)[
     #block(
-      fill: colors.equation-ext-color, 
-      stroke: colors.equation-ext-stroke,
-      width: 80%,
+      fill: fg, 
+      stroke: bg,
+      width: 100% - spacers.equation-ext-x,
       inset: 10pt,
       radius: 5pt,
     )[
       #align(left)[#text(size: 1.2em, title)]
       #grid(
         align: horizon + center,
-        columns: (60%, 40%),
+        columns: (ratio, 1fr),
         // stroke: rgb(0, 0, 0, 255),
         gutter: 0em,
         grid(
           gutter: 0em,
           inset: 0.5em,
           ..equations.map(eq => align(center)[
-            #show math.equation: set text(font: "New Computer Modern Math")
-            #show raw: set text(font: "New Computer Modern Math")
             #math.equation(eq)
           ])
         ),
@@ -111,8 +134,6 @@
             align: top,
             ..variables.zip(definitions).map(((var, def)) => (
               pad(right: 0pt, rest: 3pt, align(right)[
-                #show math.equation: set text(font: "New Computer Modern Math")
-                #show raw: set text(font: "New Computer Modern Math")
                 #var
               ]),
               pad(x: 0pt, rest: 3pt, repeat(".", justify: true)),
@@ -120,7 +141,7 @@
                 align(left)[
                   #block(width: 100%)[
                     #box(width: 100%)[
-                      #text(hyphenate: true, eval(mode: "markup", def))
+                      #text(hyphenate: true, par(justify: false, eval(mode: "markup", def)))
                     ]
                   ]
                 ]
@@ -129,9 +150,9 @@
           )
         ]
       )
-      #align(left, explanation)
+      #if explanation.len() > 0 {
+        align(left, explanation)
+      }
     ]
   ]
-
-  body
 }

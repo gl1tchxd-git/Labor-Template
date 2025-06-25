@@ -1,4 +1,5 @@
-#import "template.typ": *
+#import "template.typ": project, contents
+#import "body.typ": *
 
 #show: project.with(
   title: "Laboratorium",
@@ -10,29 +11,8 @@
   logo: "HTBLuVA_Salzburg_Logo.svg"
 )
 
-#lorem(100)
+#contents.heading
 
-#show: image-text.with(
-  filename: "Data/Sine1.png",
-  alt: "Abb. 1 Sinusschwingung",
-)
+#body
 
-#lorem(100)
-
-#show: equation-ext.with(
-  title: "Title",
-  equations: (
-    $U=R*I$,
-    $"test"$,
-  ),
-  variables: (
-    $U$,
-    $R$,
-    $I$,
-  ),
-  definitions: (
-    "Definition 1",
-    "Definition 2 (also longer text to test the layout)"
-  ),
-  explanation: "Explenation of the equations and definitions.",
-)
+#contents.image
