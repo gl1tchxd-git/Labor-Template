@@ -1,18 +1,17 @@
-#import "template.typ": project, contents
+#import "template.typ": cover, contents
 #import "body.typ": *
+#import "setup.typ": styling
 
-#show: project.with(
-  title: "Laboratorium",
-  authors: (
-    "Max Mustermann",
-    "Michael Mustermann",
-  ),
-  date: "January 1, 2025",
-  logo: "HTBLuVA_Salzburg_Logo.svg"
-)
+#cover
+
+#show: styling
 
 #contents.heading
 
 #body
 
 #contents.image
+
+//TODO Make Cover nicer (adjust margins, add info, add Abteilung)
+//TODO Add nice header and footer
+//TODO Add rules for things like code blocks and short math blocks

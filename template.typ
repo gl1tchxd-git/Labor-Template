@@ -1,47 +1,52 @@
 #import "setup.typ": *
 
-#let project(
-  title: "",
-  subtitle: "",
-  authors: (),
-  date: none,
-  logo: none,
-  body,
-) = {
-  set document(author: authors, title: title)
-  set page(numbering: "1", number-align: end)
-  set text(font: "New Computer Modern", lang: "de")
-  show math.equation: set text(weight: 400)
-  set heading(numbering: "1.1")
-
-  // Set run-in subheadings, starting at level 5.
-  // show heading: it => {
-  //   if it.level > 4 {
-  //     parbreak()
-  //     text(11pt, style: "italic", weight: "regular", it.body + ".")
-  //   } else {
-  //     it
-  //   }
-  // }
-
+#let cover = {
   v(0.6fr)
-  if logo != none {
-    align(right, image(logo, width: 26%))
+  if info.logo != none {
+    align(right, image(info.logo, width: 26%))
   }
   v(9.6fr)
 
+  let months = (
+    "Januar",
+    "Februar",
+    "März",
+    "April",
+    "Mai",
+    "Juni",
+    "Juli",
+    "August",
+    "September",
+    "Oktober",
+    "November",
+    "Dezember",
+  )
+
+  let weekdays = (
+    "Montag",
+    "Dienstag",
+    "Mittwoch",
+    "Donnerstag",
+    "Freitag",
+    "Samstag",
+    "Sonntag",
+  )
+  let date = weekdays.at(info.date.weekday() - 1) +", " + info.date.display("[day padding:none]. ") + months.at(info.date.month() - 1) + " " + info.date.display("[year]")
+
   text(1.1em, date)
   v(1.2em, weak: true)
-  text(2em, weight: 700, title)
+  text(2em, weight: 700, info.title)
+  v(1em, weak: true)
+  text(1.3em, weight: 500, info.description)
 
   // Author information.
   pad(
-    top: 0.7em,
+    top: 1.2em,
     right: 20%,
     grid(
       columns: (1fr,),
       gutter: 1em,
-      ..authors.map(author => align(start, strong(author))),
+      ..info.author.map(author => align(start, strong(author))),
     ),
   )
 
@@ -49,8 +54,6 @@
   pagebreak()
 
   set par(justify: true)
-
-  body
 }
 
 #let contents = (
@@ -123,25 +126,25 @@
           gutter: 0em,
           inset: 0.5em,
           ..equations.map(eq => align(center)[
-            #math.equation(eq)
+            #math.limits(inline: false, eq)
           ])
         ),
         block(width: 100%, breakable: true)[
           #grid(
             gutter: 0em,
-            columns: (20%, 10%, 70%),
+            columns: (10pt, 10pt, auto),
             // stroke: rgb(0, 0, 0, 255),
-            align: top,
+            align: horizon,
             ..variables.zip(definitions).map(((var, def)) => (
-              pad(right: 0pt, rest: 3pt, align(right)[
+              pad(right: 0.5pt, top: 3pt, align(right + top)[
                 #var
               ]),
-              pad(x: 0pt, rest: 3pt, repeat(".", justify: true)),
+              pad(x: 0pt, top: 3pt, align(top)[#repeat(".", justify: true)]),
               pad(left: 1pt, rest: 3pt,
                 align(left)[
                   #block(width: 100%)[
                     #box(width: 100%)[
-                      #text(hyphenate: true, par(justify: false, eval(mode: "markup", def)))
+                      #text(hyphenate: true, par(justify: false, linebreaks: "optimized", eval(mode: "markup", def)))
                     ]
                   ]
                 ]

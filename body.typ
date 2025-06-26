@@ -2,6 +2,7 @@
 
 #let body = [
   #lorem(100)\
+
   #equation-ext(
     title: "Ohmsches Gesetz",
     equations: (
@@ -18,4 +19,7 @@
   )
 
   #image-text(filename: "Data/Sine1.png", alt: "Sinusschwingung")
+
+  = Header
+  == Subheader
 ]
