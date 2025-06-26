@@ -1,9 +1,13 @@
 #import "setup.typ": *
 
 #let cover = {
+  set page(
+    margin: (x: 60pt)
+  )
+
   v(0.6fr)
   if info.logo != none {
-    align(right, image(info.logo, width: 26%))
+    align(right, image(info.logo, width: 30%))
   }
   v(9.6fr)
 
@@ -31,29 +35,43 @@
     "Samstag",
     "Sonntag",
   )
-  let date = weekdays.at(info.date.weekday() - 1) +", " + info.date.display("[day padding:none]. ") + months.at(info.date.month() - 1) + " " + info.date.display("[year]")
 
-  text(1.1em, date)
-  v(1.2em, weak: true)
-  text(2em, weight: 700, info.title)
-  v(1em, weak: true)
-  text(1.3em, weight: 500, info.description)
+  grid(
+    columns: 2,
+    rows: 2,
+    gutter: 1.5em,
+    // stroke: rgb(0, 0, 0, 255),
 
-  // Author information.
-  pad(
-    top: 1.2em,
-    right: 20%,
-    grid(
-      columns: (1fr,),
-      gutter: 1em,
-      ..info.author.map(author => align(start, strong(author))),
+    {
+      let date = weekdays.at(info.date.weekday() - 1) +", " + info.date.display("[day padding:none]. ") + months.at(info.date.month() - 1) + " " + info.date.display("[year]")
+
+      text(1.1em, date)
+      v(1.2em, weak: true)
+      text(2em, weight: 700, info.title)
+      v(1em, weak: true)
+      text(1.3em, weight: 500, info.description)
+    },
+
+    {},
+    
+    pad(
+      right: 20%,
+      align(horizon)[
+        #grid(
+          columns: (1fr,),
+          gutter: 1em,
+          ..info.author.map(author => align(start, strong(author)))
+        )
+      ]
     ),
+
+    align(bottom, 
+      division(1)
+    )
   )
 
-  v(2.4fr)
+  v(0.6fr)
   pagebreak()
-
-  set par(justify: true)
 }
 
 #let contents = (
@@ -126,7 +144,7 @@
           gutter: 0em,
           inset: 0.5em,
           ..equations.map(eq => align(center)[
-            #math.limits(inline: false, eq)
+            #eq
           ])
         ),
         block(width: 100%, breakable: true)[
@@ -158,4 +176,35 @@
       }
     ]
   ]
+}
+
+#let header(it) = {
+  set page(
+    header:
+    [
+      #align(center)[
+        #block(width: 100%)[
+        #grid(columns: (1fr, 1fr, 1fr),
+          align(left + horizon, image(info.logo)),
+          align(center + horizon, info.class),
+          align(right + horizon, info.lesson)
+        ) 
+      ]
+      ]
+    ],
+    footer:
+    [
+      #align(center)[
+        #block(width: 100%)[
+        #grid(columns: (1fr, 1fr, 1fr),
+          align(left + horizon, division(2)),
+          align(center + horizon, info.author.at(0)),
+          align(right + horizon, context counter(page).get().at(0))
+        ) 
+      ]
+      ]
+    ]
+  ) 
+
+  it
 }

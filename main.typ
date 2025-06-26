@@ -1,10 +1,11 @@
-#import "template.typ": cover, contents
+#import "template.typ": cover, contents, header
 #import "body.typ": *
 #import "setup.typ": styling
 
 #cover
 
 #show: styling
+#show: header
 
 #contents.heading
 

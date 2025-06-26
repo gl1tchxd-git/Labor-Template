@@ -6,7 +6,7 @@
   #equation-ext(
     title: "Ohmsches Gesetz",
     equations: (
-      $R=U/I$,
+      $R=sum^4_4 i(t)^2 $,
     ),
     variables: (
       $R$, $U$, $I$,
