@@ -1,5 +1,4 @@
 #import "template.typ": cover, contents, header
-#import "body.typ": *
 #import "setup.typ": styling
 
 #cover
@@ -9,7 +8,7 @@
 
 #contents.heading
 
-#body
+#include "body.typ"
 
 #contents.image
 

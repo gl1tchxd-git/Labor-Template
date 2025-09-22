@@ -40,7 +40,7 @@
 
 #let styling(it) = {
   set text(
-    size: 1em,
+    size: 1.2em,
     font: "New Computer Modern",
     ligatures: true,
     historical-ligatures: true,
@@ -50,12 +50,23 @@
   )
   set heading(
     numbering: "1.a",
+    hanging-indent: 20em
   )
+  show heading: it => pad(left: -10pt + 2pt * it.level, underline(extent: 2.8pt, it))
   set par(
     justify: true,
     linebreaks: "optimized",
     // first-line-indent: 1.5em,
   )
+
+  show math.equation.where(block: true): set align(left)
+
+  set table(
+    fill: (x, y) =>
+      if x == 0 or y == 0 { rgb("#e6e6e6") },
+    inset: (right: 1.5em),
+  )
+
 
   //------METADATA------//
 
